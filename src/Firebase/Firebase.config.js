@@ -11,7 +11,17 @@ const firebaseConfig = {
     storageBucket: import.meta.env.VITE_storageBucket,
     messagingSenderId: import.meta.env.VITE_messagingSenderId,
     appId: import.meta.env.VITE_appId,
+   
 };
+
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDwTC1v8otKXZnkl5R2dXWbEfJBeV7yyMk",
+//     authDomain: "bistro-boss-a9f3a.firebaseapp.com",
+//     projectId: "bistro-boss-a9f3a",
+//     storageBucket: "bistro-boss-a9f3a.appspot.com",
+//     messagingSenderId: "1035833306780",
+//     appId: "1:1035833306780:web:1a77b1dfa9143d80374759"
+// };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

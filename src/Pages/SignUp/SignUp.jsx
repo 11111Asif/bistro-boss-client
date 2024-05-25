@@ -4,12 +4,14 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
 
 const SignUp = () => {
     const { register, handleSubmit, reset, formState: { errors }, } = useForm()
     const {createUser, updateUserProfile} = useContext(AuthContext)
     const navigate = useNavigate()
+    const axiosPublic = UseAxiosPublic();
 
     const onSubmit = (data) => {
         console.log(data)
@@ -19,17 +21,27 @@ const SignUp = () => {
             console.log(loggedUser)
             updateUserProfile(data.name, data.photo)
             .then(() => {
-                console.log('updata profile')
-                reset()
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-
-                  navigate('/')
+                const userInfo = {
+                    name: data.name,
+                    email: data.email
+                }
+                axiosPublic.post('/users', userInfo)
+                .then(res => {
+                    if(res.data.insertedId){
+                        console.log('user data is running')
+                        reset()
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Your work has been saved",
+                            showConfirmButton: false,
+                            timer: 1500
+                          });
+        
+                          navigate('/')
+                    }
+                })
+              
             })
             .catch(error => console.log(error))
         })
@@ -66,7 +78,7 @@ const SignUp = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" {...register("email, { required: true }")} name="email" placeholder="email" className="input input-bordered" required />
+                                <input type="email" {...register("email", { required: true })} name="email" placeholder="email" className="input input-bordered" required />
                                 {errors.email && <span className="text-red-600">Email is required</span>}
                             </div>
                             <div className="form-control">
